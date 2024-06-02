@@ -21,7 +21,9 @@ class DoubanBookTestPipeline:
             charset="utf8mb4"
         )
         self.__cur = self.__conn.cursor()
-        self.__auth = oss2.Auth(self.__ACCESS_KEY, self.__ACCESS_KEY_SECRET)
+        self.__endpoint = 'https://oss-cn-hangzhou.aliyuncs.com'  # Suppose that your bucket is in the Hangzhou region.
+        self.__BUCKET_NAME = "bookread"
+        self.__auth = oss2.ProviderAuth(oss2.CredentialsProvider())
         self.__bucket = oss2.Bucket(self.__auth, self.__endpoint, self.__BUCKET_NAME)
 
     def __put_data(self, data):
