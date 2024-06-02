@@ -23,10 +23,10 @@ class DoubanBookTestPipeline:
             charset="utf8mb4"
         )
         self.__cur = self.__conn.cursor()
-        self.__endpoint = os.getenv("endpiont")  # Suppose that your bucket is in the Hangzhou region.
-        self.__BUCKET_NAME = os.getenv("BUCKET_NAME")
-        self.__ACCESS_KEY = os.getenv("ACCESS_KEY")
-        self.__ACCESS_KEY_SECRET = os.getenv("ACCESS_KEY_SECRET")
+        self.__endpoint = os.getenv("")  # Suppose that your bucket is in the Hangzhou region.
+        self.__BUCKET_NAME = os.getenv("")
+        self.__ACCESS_KEY = os.getenv("")
+        self.__ACCESS_KEY_SECRET = os.getenv("")
         self.__auth = oss2.Auth(self.__ACCESS_KEY, self.__ACCESS_KEY_SECRET)
         self.__bucket = oss2.Bucket(self.__auth, self.__endpoint, self.__BUCKET_NAME)
 
@@ -36,7 +36,7 @@ class DoubanBookTestPipeline:
         inp_data = requests.get(data)
         self.__bucket.put_object(obj_name, inp_data)
         self.__bucket.put_object_acl(obj_name, oss2.OBJECT_ACL_PUBLIC_READ)
-        return f"https://{self.__bucket}.{self.__endpoint}/{obj_name}"
+        return f"https://{self.__BUCKET_NAME}.{self.__endpoint}/{obj_name}"
 
     def process_item(self, item, spider):
         author_profile = item["author_profile"]
