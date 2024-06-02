@@ -31,12 +31,7 @@ class DoubanBookTestPipeline:
         self.__bucket = oss2.Bucket(self.__auth, self.__endpoint, self.__BUCKET_NAME)
 
     def __put_data(self, data):
-        c = data.rfind("/")
-        obj_name = data[c + 1::]
-        inp_data = requests.get(data)
-        self.__bucket.put_object(obj_name, inp_data)
-        self.__bucket.put_object_acl(obj_name, oss2.OBJECT_ACL_PUBLIC_READ)
-        return f"https://{self.__bucket}.{self.__endpoint}/{obj_name}"
+        pass
 
     def process_item(self, item, spider):
         author_profile = item["author_profile"]
