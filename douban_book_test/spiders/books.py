@@ -55,7 +55,10 @@ class BookSpider(RedisSpider):
             item["producer"] = producer[0]
         else:
             item['producer'] = ""
-        item["pub_year"] = pub_year[0].strip()
+        if len(pub_year) > 0:
+            item["pub_year"] = pub_year[0].strip()
+        else:
+            item["pub_year"] = ""
         if len(pages) > 0:
             item["pages"] = pages[0].strip()
         else:
@@ -83,44 +86,3 @@ class BookSpider(RedisSpider):
             item["author_intro"] = ""
         item["douban_rating"] = rating[0].strip()
         yield item
-        # sel = Selector(response)
-        # a_href = sel.xpath("//*//ul[@class='subject-list']/li//a[@class='nbg']/@href").extract()
-        # pre_book_name = sel.xpath("//div[@class='info']/h2/a/text()").extract()
-        # book_names_lst = []
-        # for i in pre_book_name:
-        #     book_name = re.sub(r"\s+", "", i.replace("\n", ""))
-        #     if book_name != "" or book_name != '':
-        #         book_names_lst.append(book_name)
-        # name_and_href = dict(zip(book_names_lst, a_href))
-        # print(name_and_href, len(name_and_href))
-        # # for a in a_href:
-        # #     print(f"---tag--- {a}")
-        # #     yield Request(url=a, callback=self.__parse_detail, cb_kwargs={'item': item})
-        # for name, href in name_and_href.items():
-        #     item = DoubanBookItem()
-        #     item['book_name'] = name
-        #     yield Request(url=href, callback=self.__parse_detail, cb_kwargs={'item': item},
-        #                   meta={'dont_redirect': True, 'handle_httpstatus_list': [302]}, dont_filter=True)
-
-    # def __parse_tag(self, response: HtmlResponse):
-    #     sel = Selector(response)
-    #     a_href = sel.xpath("//*//ul[@class='subject-list']/li//a[@class='nbg']/@href").extract()
-    #     pre_book_name = sel.xpath("//div[@class='info']/h2/a/text()").extract()
-    #     book_names_lst = []
-    #     for i in pre_book_name:
-    #         book_name = re.sub(r"\s+", "", i.replace("\n", ""))
-    #         if book_name != "" or book_name != '':
-    #             book_names_lst.append(book_name)
-    #     name_and_href = dict(zip(book_names_lst, a_href))
-    #     print(name_and_href, len(name_and_href))
-    #     # for a in a_href:
-    #     #     print(f"---tag--- {a}")
-    #     #     yield Request(url=a, callback=self.__parse_detail, cb_kwargs={'item': item})
-    #     for name, href in name_and_href.items():
-    #         item = DoubanBookItem()
-    #         item['book_name'] = name
-    #         yield Request(url=href, callback=self.__parse_detail, cb_kwargs={'item': item},
-    #                       meta={'dont_redirect': True, 'handle_httpstatus_list': [302]}, dont_filter=True)
-
-    def __parse_detail(self, response: HtmlResponse, **kwargs):
-        item = kwargs['item']
