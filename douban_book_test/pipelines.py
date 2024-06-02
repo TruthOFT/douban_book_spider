@@ -23,10 +23,10 @@ class DoubanBookTestPipeline:
             charset="utf8mb4"
         )
         self.__cur = self.__conn.cursor()
-        self.__endpoint = 'oss-cn-hangzhou.aliyuncs.com'  # Suppose that your bucket is in the Hangzhou region.
-        self.__BUCKET_NAME = "bookread"
-        self.__ACCESS_KEY = "LTAI5t6NC7bxAotiGpZAp3Jj"
-        self.__ACCESS_KEY_SECRET = "YNvUzxYHgTsaRm00QwBd3RZqDNlC3R"
+        self.__endpoint = ''  # Suppose that your bucket is in the Hangzhou region.
+        self.__BUCKET_NAME = ""
+        self.__ACCESS_KEY = ""
+        self.__ACCESS_KEY_SECRET = ""
         self.__auth = oss2.Auth(self.__ACCESS_KEY, self.__ACCESS_KEY_SECRET)
         self.__bucket = oss2.Bucket(self.__auth, self.__endpoint, self.__BUCKET_NAME)
 
