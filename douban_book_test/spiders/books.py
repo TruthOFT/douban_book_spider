@@ -1,3 +1,5 @@
+import json
+
 import scrapy
 from scrapy.http import HtmlResponse, Request
 from scrapy import Selector
@@ -12,8 +14,16 @@ class BookSpider(RedisSpider):
     # start_urls = ["https://book.douban.com/tag/?view=type&icn=index-sorttags-all"]
     redis_key = "books:start_urls"
 
-    def parse(self, response: HtmlResponse, **kwargs):
+    def make_request_from_data(self, data):
+        datas = json.loads(data)
+        tag = datas['tag']
+        url = datas['url']
         item = DoubanBookItem()
+        item['tag'] = tag
+        return scrapy.Request(url=url, callback=self.parse, dont_filter=True, cb_kwargs={"item": item})
+
+    def parse(self, response: HtmlResponse, **kwargs):
+        item = kwargs["item"]
         book_name = response.xpath("//div[@id='wrapper']//h1/span/text()").extract()
         book_img = response.xpath("//div[@id='mainpic']//a[@class='nbg']/@href").extract()
         pub_house = response.xpath(

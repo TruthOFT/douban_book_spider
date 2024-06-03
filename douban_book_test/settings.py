@@ -36,8 +36,8 @@ CONCURRENT_REQUESTS = 32
 # See also autothrottle settings and docs
 # DOWNLOAD_DELAY = 5
 # RANDOMIZE_DOWNLOAD_DELA = True
-RANDOM_DELAY_A = 2
-RANDOM_DELAY_B = 3
+RANDOM_DELAY_A = 1
+RANDOM_DELAY_B = 2
 # The download delay setting will honor only one of:
 # CONCURRENT_REQUESTS_PER_DOMAIN = 16
 # CONCURRENT_REQUESTS_PER_IP = 16
@@ -62,11 +62,11 @@ DEFAULT_REQUEST_HEADERS = {
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-DOWNLOADER_MIDDLEWARES = {
-    "douban_book_test.middlewares.RandomDelayMiddleware": 150,
+# DOWNLOADER_MIDDLEWARES = {
+    # "douban_book_test.middlewares.RandomDelayMiddleware": 150,
     # "douban_book_test.middlewares.RandomUserAgentMiddleware": 100
     # "douban_book_test.middlewares.ProxyMiddleware": 50
-}
+# }
 
 # USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.87 Safari/537.36"
 RANDOM_UA_TYPE = "random"

@@ -22,3 +22,4 @@ class DoubanBookItem(scrapy.Item):
     author_profile = Field()
     author_intro = Field()
     douban_rating = Field()
+    tag = Field()

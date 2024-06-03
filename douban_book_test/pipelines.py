@@ -49,8 +49,8 @@ class DoubanBookTestPipeline:
             self.__cur.execute(sql)
             author_id = self.__conn.insert_id()
             sql2 = (
-                f"insert into books(title, cover_image, publisher, producer, publish_date, pages, binding, isbn, description,douban_rating) values ("
-                f"'{item['book_name']}', '{cover_url}', '{item['pub_house']}', '{item['producer']}', '{item['pub_year']}', '{item['pages']}', '{item['bind']}', '{item['isbn']}', '{item['book_intro']}', '{item['douban_rating']}')")
+                f"insert into books(title, cover_image, publisher, producer, publish_date, pages, binding, isbn, description,douban_rating, tag) values ("
+                f"'{item['book_name']}', '{cover_url}', '{item['pub_house']}', '{item['producer']}', '{item['pub_year']}', '{item['pages']}', '{item['bind']}', '{item['isbn']}', '{item['book_intro']}', '{item['douban_rating']}', '{item['tag']}')")
             self.__cur.execute(sql2)
             book_id = self.__conn.insert_id()
             sql3 = f"insert into bookauthors(book_id, author_id) values ('{book_id}', '{author_id}')"
