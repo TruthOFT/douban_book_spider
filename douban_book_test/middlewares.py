@@ -11,6 +11,7 @@ from scrapy import signals, Request
 
 # useful for handling different item types with a single interface
 from itemadapter import is_item, ItemAdapter
+from scrapy.downloadermiddlewares.useragent import UserAgentMiddleware
 
 
 def get_cookie():
@@ -143,6 +144,27 @@ class RandomDelayMiddleware(object):
 COOKIES = get_cookie()
 
 
+class RandomUserAgentListMiddleware(UserAgentMiddleware):
+    """
+        自动随机更换UA
+    """
+
+    def __init__(self, user_agent_list):
+        super(RandomUserAgentListMiddleware, self).__init__()
+        self.user_agent_list = user_agent_list
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(
+            user_agent_list=crawler.settings.get('USER_AGENT_LIST')
+        )
+
+    def process_request(self, request, spider):
+        random_user_agent = random.choice(self.user_agent_list)
+        logging.info(f"### user-agent {random_user_agent} ###")
+        request.headers.setdefault('User-Agent', random_user_agent)
+
+
 class RandomUserAgentMiddleware(object):
     def __init__(self, crawler):
         super(RandomUserAgentMiddleware, self).__init__()
@@ -160,4 +182,6 @@ class RandomUserAgentMiddleware(object):
             return getattr(self.ua, self.ua_type)
 
         request.cookies = COOKIES
-        request.headers.setdefault('User-Agent', get_ua())
+        agent = get_ua()
+        logging.debug(f"### agent {agent}")
+        request.headers.setdefault('User-Agent', agent)

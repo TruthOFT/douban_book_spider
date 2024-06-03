@@ -40,21 +40,31 @@ class DoubanBookTestPipeline:
 
     def process_item(self, item, spider):
         author_profile = item["author_profile"]
-        print(author_profile)
         book_img = item["book_img"]
-        author_url = self.__put_data(author_profile)
-        cover_url = self.__put_data(book_img)
+        if author_profile:
+            author_url = self.__put_data(author_profile)
+        else:
+            author_url = ""
+        pre_tag = item['tag']
+        c = str(pre_tag).find("/")
+        tag = pre_tag[c + 1::]
+        if book_img:
+            cover_url = self.__put_data(book_img)
+        else:
+            cover_url = ""
         sql = f"insert into authors(name, photo, biography) values ('{item['author']}', '{author_url}', '{item['author_intro']}')"
         try:
             self.__cur.execute(sql)
             author_id = self.__conn.insert_id()
             sql2 = (
-                f"insert into books(title, cover_image, publisher, producer, publish_date, pages, binding, isbn, description,douban_rating, tag) values ("
-                f"'{item['book_name']}', '{cover_url}', '{item['pub_house']}', '{item['producer']}', '{item['pub_year']}', '{item['pages']}', '{item['bind']}', '{item['isbn']}', '{item['book_intro']}', '{item['douban_rating']}', '{item['tag']}')")
+                f"insert into books(title, cover_image, publisher, producer, publish_date, pages, binding, isbn, description,douban_rating) values ("
+                f"'{item['book_name']}', '{cover_url}', '{item['pub_house']}', '{item['producer']}', '{item['pub_year']}', '{item['pages']}', '{item['bind']}', '{item['isbn']}', '{item['book_intro']}', '{item['douban_rating']}')")
             self.__cur.execute(sql2)
             book_id = self.__conn.insert_id()
             sql3 = f"insert into bookauthors(book_id, author_id) values ('{book_id}', '{author_id}')"
             self.__cur.execute(sql3)
+            sql4 = f"insert into tags(tag_name, author_id, book_id) values ('{tag}', '{author_id}', '{book_id}')"
+            self.__cur.execute(sql4)
             self.__conn.commit()
         except pymysql.MySQLError:
             self.__conn.rollback()
